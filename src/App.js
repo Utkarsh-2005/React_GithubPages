@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div style={{ textAlign: "center", marginTop: "2rem" }}>
-      <h1>Todo List</h1>
+      <h1>Todo List yoo!</h1>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
