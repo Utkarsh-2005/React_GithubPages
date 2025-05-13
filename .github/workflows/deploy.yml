@@ -1,22 +1,33 @@
 name: Deploy TODO List
+
 on:
-    push:
-        branches:
-         - "main"
+  push:
+    branches:
+      - main
+
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
-        steps: 
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: NPM Install 
-          run: npm ci
-          working-directory: .
-        - name: Build app
-          run: npm run build
-          working-directory: .
-        - name: Deploy
-          uses: JamesIves/github-pages-deploy-action@4.1.5
-          with:
-            branch: todo-list-react
-            folder: build
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false   # so we can inject our GITHUB_TOKEN later
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.1.5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # <— MUST have push rights
+          branch: todo-list-react            # target branch
+          folder: build                      # relative path to your build output
